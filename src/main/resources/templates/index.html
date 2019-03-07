@@ -6,6 +6,21 @@
 	</head>
 	
 	<body>
-		<h1>My Recipes change!</h1>
+		<h1>My Recipes</h1>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="recipe : ${recipes}">
+					<td th:text="${recipe.id}">1</td>
+					<td th:text="${recipe.description}">Macheroni al forno</td>
+				</tr>
+			</tbody>
+		</table>
 	</body>
 </html>

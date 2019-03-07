@@ -1,0 +1,170 @@
+package guru.springframework.sfgrecipes.bootstrap;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import guru.springframework.sfgrecipes.domain.Category;
+import guru.springframework.sfgrecipes.domain.Difficulty;
+import guru.springframework.sfgrecipes.domain.Ingredient;
+import guru.springframework.sfgrecipes.domain.Notes;
+import guru.springframework.sfgrecipes.domain.Recipe;
+import guru.springframework.sfgrecipes.domain.UnitOfMeasure;
+import guru.springframework.sfgrecipes.services.CategoryService;
+import guru.springframework.sfgrecipes.services.RecipeService;
+import guru.springframework.sfgrecipes.services.UnitOfMeasureService;
+
+@Component
+public class DataLoader implements CommandLineRunner {
+
+	private final RecipeService recipeService;
+	private final CategoryService categoryService;
+	private final UnitOfMeasureService unitOfMeasureService;
+	
+	public DataLoader(RecipeService recipeService, CategoryService categoryService, UnitOfMeasureService unitOfMeasureService) {
+		this.recipeService = recipeService;
+		this.categoryService = categoryService;
+		this.unitOfMeasureService = unitOfMeasureService;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		this.addPerfectGuacamoleRecipe();
+		this.addSpicyGrilledChickenRecipe();
+	}
+
+	private void addSpicyGrilledChickenRecipe() {
+		Recipe guacamole = new Recipe();
+		guacamole.setDescription("How to Make Perfect Guacamole");
+		guacamole.setPrepTime(10);
+		guacamole.setCookTime(0);
+		guacamole.setServings(4);
+		guacamole.setSource("Simply Recipes");
+		guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("1. Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon. Place in a bowl.");
+		sb.append("2. Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky)");
+		sb.append("3. Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown. Add the chopped onion, cilantro, black pepper, and chiles. Chili peppers vary individually in their hotness. So, start with a half of one chili pepper and add to the guacamole to your desired degree of hotness.");
+		sb.append("Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.");
+		sb.append("4. Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.");
+		sb.append("Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.");
+
+		guacamole.setDirections(sb.toString());
+		
+		guacamole.setDifficulty(Difficulty.EASY);
+		
+		Notes notes = new Notes();
+		notes.setRecipeNotes("An example note");
+		notes.setRecipe(guacamole);
+		
+		guacamole.setNotes(notes);
+		
+		Ingredient avocados = new Ingredient();
+		avocados.setDescription("ripe avocados");
+		avocados.setAmount(new BigDecimal("2"));
+		avocados.setRecipe(guacamole);
+		
+		Optional<UnitOfMeasure> dash = this.unitOfMeasureService.findByDescription("Dash");
+		
+		if (dash.isPresent()) {
+			avocados.setUom(dash.get());
+		}
+		else {
+			System.out.println("Dash Unit Of Measure not found");
+		}
+		
+		guacamole.getIngredients().add(avocados);
+		
+		Ingredient salt = new Ingredient();
+		salt.setDescription("Kosher salt");
+		salt.setAmount(new BigDecimal("0.5"));
+		salt.setRecipe(guacamole);
+		
+		Optional<UnitOfMeasure> teaspoon = this.unitOfMeasureService.findByDescription("Teaspoon");
+		
+		if (teaspoon.isPresent()) {
+			salt.setUom(teaspoon.get());
+		}
+		else {
+			System.out.println("Teaspoon Unit Of Measure not found");
+		}
+		
+		guacamole.getIngredients().add(salt);
+		
+		Optional<Category> mexican = this.categoryService.findByDescription("Mexican");
+		
+		if (mexican.isPresent()) {
+			guacamole.getCategories().add(mexican.get());
+		}
+		else {
+			System.out.println("Mexican Category not found");
+		}
+		
+		this.recipeService.saveRecipe(guacamole);
+		
+		System.out.println("Perfect Guacamole Recipe saved with id: " + guacamole.getId());
+	}
+
+	private void addPerfectGuacamoleRecipe() {
+		Recipe chicken = new Recipe();
+		
+		chicken.setDescription("Spicy Grilled Chicken Tacos");
+		chicken.setPrepTime(20);
+		chicken.setCookTime(15);
+		chicken.setServings(6);
+		chicken.setSource("Simply Recipes");
+		chicken.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("1 Prepare a gas or charcoal grill for medium-high, direct heat.");
+		sb.append("2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.");
+		sb.append("Set aside to marinate while the grill heats and you prepare the rest of the toppings.");
+		sb.append("3 Grill the chicken: Grill the chicken for 3 to 4 minutes per side, or until a thermometer inserted into the thickest part of the meat registers 165F. Transfer to a plate and rest for 5 minutes.");
+		sb.append("4 Warm the tortillas: Place each tortilla on the grill or on a hot, dry skillet over medium-high heat. As soon as you see pockets of the air start to puff up in the tortilla, turn it with tongs and heat for a few seconds on the other side.");
+		sb.append("Wrap warmed tortillas in a tea towel to keep them warm until serving.");
+		sb.append("5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.");
+		
+		chicken.setDirections(sb.toString());
+		
+		chicken.setDifficulty(Difficulty.MODERATE);
+		
+		Notes notes = new Notes();
+		notes.setRecipeNotes("An example note");
+		notes.setRecipe(chicken);
+		
+		chicken.setNotes(notes);
+		
+		Ingredient chili = new Ingredient();
+		chili.setDescription("ancho chili powder");
+		chili.setAmount(new BigDecimal("2"));
+		chili.setRecipe(chicken);
+		
+		Optional<UnitOfMeasure> tablespoon = this.unitOfMeasureService.findByDescription("Tablespoon");
+		
+		if (tablespoon.isPresent()) {
+			chili.setUom(tablespoon.get());
+		}
+		else {
+			System.out.println("Tablespoon Unit Of Measure not found");
+		}
+		
+		chicken.getIngredients().add(chili);
+		
+		Optional<Category> mexican = this.categoryService.findByDescription("Mexican");
+		
+		if (mexican.isPresent()) {
+			chicken.getCategories().add(mexican.get());
+		}
+		else {
+			System.out.println("Mexican Category not found");
+		}
+		
+		this.recipeService.saveRecipe(chicken);
+		
+		System.out.println("Spicy Grilled Chicken Recipe saved with id: " + chicken.getId());
+	}
+
+}
