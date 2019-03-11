@@ -17,9 +17,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Recipe {
 
@@ -41,6 +47,7 @@ public class Recipe {
 	private Difficulty difficulty;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+	@Builder.Default
 	private Set<Ingredient> ingredients = new HashSet<>();
 	
 	@Lob
@@ -49,6 +56,7 @@ public class Recipe {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Notes notes;
 	
+	@Builder.Default
 	@ManyToMany
 	@JoinTable(
 		name = "recipe_category", 
@@ -58,13 +66,20 @@ public class Recipe {
 	private Set<Category> categories = new HashSet<>();
 	
 	public void setNotes(Notes notes) {
-		this.notes = notes;
 		notes.setRecipe(this);
+
+		this.notes = notes;
 	}
 	
 	public Recipe addIngredient(Ingredient ingredient) {
 		ingredient.setRecipe(this);
+		
 		this.ingredients.add(ingredient);
+		return this;
+	}
+	
+	public Recipe addCategory(Category category) {
+		this.categories.add(category);
 		return this;
 	}
 	

@@ -44,26 +44,20 @@ public class DataLoader implements CommandLineRunner {
 		if (!dash.isPresent()) {
 			throw new RuntimeException("Dash Unit Of Measure not found");
 		}
+		UnitOfMeasure dashUom = dash.get();
 		
 		Optional<UnitOfMeasure> teaspoon = this.unitOfMeasureService.findByDescription("Teaspoon");
 		if (!teaspoon.isPresent()) {
 			throw new RuntimeException("Teaspoon Unit Of Measure not found");
 		}
+		UnitOfMeasure teaspoonUom = teaspoon.get();
 		
 		Optional<Category> mexican = this.categoryService.findByDescription("Mexican");
 		if (!mexican.isPresent()) {
 			throw new RuntimeException("Mexican Category not found");
 		}
-		
-		Recipe guacamole = new Recipe();
-		guacamole.setDescription("How to Make Perfect Guacamole");
-		guacamole.setPrepTime(10);
-		guacamole.setCookTime(0);
-		guacamole.setServings(4);
-		guacamole.setSource("Simply Recipes");
-		guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
-		guacamole.setDifficulty(Difficulty.EASY);
-		
+		Category mexicanCat = mexican.get();
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("1. Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon. Place in a bowl.");
 		sb.append("2. Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky)");
@@ -71,14 +65,22 @@ public class DataLoader implements CommandLineRunner {
 		sb.append("Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.");
 		sb.append("4. Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.");
 		sb.append("Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.");
-		guacamole.setDirections(sb.toString());
+		
+		Recipe guacamole = Recipe.builder()
+			.description("How to Make Perfect Guacamole")
+			.prepTime(10)
+			.cookTime(0)
+			.servings(4)
+			.source("Simply Recipes")
+			.url("https://www.simplyrecipes.com/recipes/perfect_guacamole/")
+			.difficulty(Difficulty.EASY)
+			.directions(sb.toString())
+		.build()
+		.addIngredient(new Ingredient("ripe avocados", new BigDecimal("2"), dashUom))
+		.addIngredient(new Ingredient("Kosher salt", new BigDecimal("0.5"), teaspoonUom))
+		.addCategory(mexicanCat);
 		
 		guacamole.setNotes(new Notes("Guacamole notes"));
-		
-		guacamole.addIngredient(new Ingredient("ripe avocados", new BigDecimal("2"), dash.get()));
-		guacamole.addIngredient(new Ingredient("Kosher salt", new BigDecimal("0.5"), teaspoon.get()));
-		
-		guacamole.getCategories().add(mexican.get());
 		
 		this.recipeService.saveRecipe(guacamole);
 		
@@ -91,21 +93,13 @@ public class DataLoader implements CommandLineRunner {
 		if (!tablespoon.isPresent()) {
 			throw new RuntimeException("Tablespoon Unit Of Measure not found");
 		}
+		UnitOfMeasure tablespoonUom = tablespoon.get();
 		
 		Optional<Category> mexican = this.categoryService.findByDescription("Mexican");
 		if (!mexican.isPresent()) {
 			throw new RuntimeException("Mexican Category not found");
 		}
-		
-		Recipe chicken = new Recipe();
-		
-		chicken.setDescription("Spicy Grilled Chicken Tacos");
-		chicken.setPrepTime(20);
-		chicken.setCookTime(15);
-		chicken.setServings(6);
-		chicken.setSource("Simply Recipes");
-		chicken.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
-		chicken.setDifficulty(Difficulty.MODERATE);
+		Category mexicanCat = mexican.get();
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("1 Prepare a gas or charcoal grill for medium-high, direct heat.");
@@ -115,13 +109,21 @@ public class DataLoader implements CommandLineRunner {
 		sb.append("4 Warm the tortillas: Place each tortilla on the grill or on a hot, dry skillet over medium-high heat. As soon as you see pockets of the air start to puff up in the tortilla, turn it with tongs and heat for a few seconds on the other side.");
 		sb.append("Wrap warmed tortillas in a tea towel to keep them warm until serving.");
 		sb.append("5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.");
-		chicken.setDirections(sb.toString());
+		
+		Recipe chicken = Recipe.builder()
+			.description("Spicy Grilled Chicken Tacos")
+			.prepTime(20)
+			.cookTime(15)
+			.servings(6)
+			.source("Simply Recipes")
+			.url("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/")
+			.difficulty(Difficulty.MODERATE)
+			.directions(sb.toString())
+		.build()
+		.addIngredient(new Ingredient("ancho chili powder", new BigDecimal("2"), tablespoonUom))
+		.addCategory(mexicanCat);
 		
 		chicken.setNotes(new Notes("Chicken notes"));
-		
-		chicken.addIngredient(new Ingredient("ancho chili powder", new BigDecimal("2"), tablespoon.get()));
-		
-		chicken.getCategories().add(mexican.get());
 		
 		this.recipeService.saveRecipe(chicken);
 		
