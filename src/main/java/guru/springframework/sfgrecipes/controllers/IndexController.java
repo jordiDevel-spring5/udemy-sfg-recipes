@@ -11,7 +11,9 @@ import guru.springframework.sfgrecipes.domain.UnitOfMeasure;
 import guru.springframework.sfgrecipes.services.CategoryService;
 import guru.springframework.sfgrecipes.services.RecipeService;
 import guru.springframework.sfgrecipes.services.UnitOfMeasureService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -32,11 +34,11 @@ public class IndexController {
 		Optional<UnitOfMeasure> unitOfMeasureOptional = this.unitOfMeasureService.findByDescription("Teaspoon");
 		
 		if (categoryOptional.isPresent()) {
-			System.out.println("Cat Id is: " + categoryOptional.get().getId());
+			log.info("Cat Id is: " + categoryOptional.get().getId());
 		}
 		
 		if (unitOfMeasureOptional.isPresent()) {
-			System.out.println("UOM Id is: " + unitOfMeasureOptional.get().getId());
+			log.info("UOM Id is: " + unitOfMeasureOptional.get().getId());
 		}
 		
 		model.addAttribute("recipes", this.recipeService.findAll());

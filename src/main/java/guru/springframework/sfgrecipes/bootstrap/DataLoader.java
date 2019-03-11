@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import guru.springframework.sfgrecipes.domain.Category;
 import guru.springframework.sfgrecipes.domain.Difficulty;
@@ -15,7 +16,9 @@ import guru.springframework.sfgrecipes.domain.UnitOfMeasure;
 import guru.springframework.sfgrecipes.services.CategoryService;
 import guru.springframework.sfgrecipes.services.RecipeService;
 import guru.springframework.sfgrecipes.services.UnitOfMeasureService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -35,6 +38,7 @@ public class DataLoader implements CommandLineRunner {
 		this.addSpicyGrilledChickenRecipe();
 	}
 
+	@Transactional
 	private void addPerfectGuacamoleRecipe() {
 		Optional<UnitOfMeasure> dash = this.unitOfMeasureService.findByDescription("Dash");
 		if (!dash.isPresent()) {
@@ -78,9 +82,10 @@ public class DataLoader implements CommandLineRunner {
 		
 		this.recipeService.saveRecipe(guacamole);
 		
-		System.out.println("Perfect Guacamole Recipe saved with id: " + guacamole.getId());
+		log.info("Perfect Guacamole Recipe saved with id: " + guacamole.getId());
 	}
 
+	@Transactional
 	private void addSpicyGrilledChickenRecipe() {
 		Optional<UnitOfMeasure> tablespoon = this.unitOfMeasureService.findByDescription("Tablespoon");
 		if (!tablespoon.isPresent()) {
@@ -120,7 +125,7 @@ public class DataLoader implements CommandLineRunner {
 		
 		this.recipeService.saveRecipe(chicken);
 		
-		System.out.println("Spicy Grilled Chicken Recipe saved with id: " + chicken.getId());
+		log.info("Spicy Grilled Chicken Recipe saved with id: " + chicken.getId());
 	}
 
 }
