@@ -33,12 +33,7 @@ public class RecipeServiceTest {
 	@Test
 	public void findAll() throws Exception {
 		Set<Recipe> recipesData = new HashSet<>();
-		
-		Recipe recipe = new Recipe();
-		recipe.setId(3L);
-		recipe.setDescription("sample recipe");
-		
-		recipesData.add(recipe);
+		recipesData.add(Recipe.builder().id(1L).description("sample recipe 1").build());
 		
 		when(this.recipeRepository.findAll()).thenReturn(recipesData);
 		
