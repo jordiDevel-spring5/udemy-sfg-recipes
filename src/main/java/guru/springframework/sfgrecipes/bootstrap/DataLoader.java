@@ -84,7 +84,7 @@ public class DataLoader implements CommandLineRunner {
 		
 		this.recipeService.saveRecipe(guacamole);
 		
-		log.info("Perfect Guacamole Recipe saved with id: " + guacamole.getId());
+		log.debug("Perfect Guacamole Recipe saved with id: " + guacamole.getId());
 	}
 
 	@Transactional
@@ -127,7 +127,7 @@ public class DataLoader implements CommandLineRunner {
 		
 		this.recipeService.saveRecipe(chicken);
 		
-		log.info("Spicy Grilled Chicken Recipe saved with id: " + chicken.getId());
+		log.debug("Spicy Grilled Chicken Recipe saved with id: " + chicken.getId());
 	}
 
 }

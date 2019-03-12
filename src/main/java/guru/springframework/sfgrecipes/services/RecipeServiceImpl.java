@@ -21,18 +21,18 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Recipe saveRecipe(Recipe recipe) {
-		log.debug("RecipeService - save has been called");
+		log.debug("[RecipeService] - saveRecipe has been called");
 		
 		return this.recipeRepository.save(recipe);
 	}
 
 	@Override
 	public Set<Recipe> findAll() {
+		log.debug("[RecipeService] - findAll has been called");
+		
 		Set<Recipe> recipeSet = new HashSet<>();
 		
 		this.recipeRepository.findAll().forEach(recipeSet::add);
-		
-		log.debug("RecipeService - findAll has been called");
 		
 		return recipeSet;
 	}

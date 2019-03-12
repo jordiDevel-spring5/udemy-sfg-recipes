@@ -30,15 +30,17 @@ public class IndexController {
 	@RequestMapping({"", "/", "/index", "/index.html"})
 	public String getIndexPage(Model model)
 	{
+		log.debug("[IndexController] - getIndexPage has been called");
+		
 		Optional<Category> categoryOptional = this.categoryService.findByDescription("American");
 		Optional<UnitOfMeasure> unitOfMeasureOptional = this.unitOfMeasureService.findByDescription("Teaspoon");
 		
 		if (categoryOptional.isPresent()) {
-			log.info("Cat Id is: " + categoryOptional.get().getId());
+			log.debug("Cat Id is: " + categoryOptional.get().getId());
 		}
 		
 		if (unitOfMeasureOptional.isPresent()) {
-			log.info("UOM Id is: " + unitOfMeasureOptional.get().getId());
+			log.debug("UOM Id is: " + unitOfMeasureOptional.get().getId());
 		}
 		
 		model.addAttribute("recipes", this.recipeService.findAll());
