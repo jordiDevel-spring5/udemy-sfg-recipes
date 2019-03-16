@@ -1,11 +1,14 @@
 package guru.springframework.sfgrecipes.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
@@ -23,6 +26,9 @@ public class RecipeServiceTest {
 	@Mock
 	RecipeRepository recipeRepository;
 	
+	final Long recipeId = 1L;
+	final Recipe recipe = Recipe.builder().id(1L).description("sample recipe 1").build();
+	
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
@@ -33,7 +39,7 @@ public class RecipeServiceTest {
 	@Test
 	public void findAll() throws Exception {
 		Set<Recipe> recipesData = new HashSet<>();
-		recipesData.add(Recipe.builder().id(1L).description("sample recipe 1").build());
+		recipesData.add(this.recipe);
 		
 		when(this.recipeRepository.findAll()).thenReturn(recipesData);
 		
@@ -41,5 +47,17 @@ public class RecipeServiceTest {
 		
 		assertEquals(1, recipes.size());
 		verify(this.recipeRepository, times(1)).findAll();
+	}
+	
+	@Test
+	public void findById() throws Exception {
+		when(this.recipeRepository.findById(this.recipeId)).thenReturn(Optional.of(this.recipe));
+		
+		Recipe findRecipe = this.recipeService.findById(this.recipeId);
+		
+		assertNotNull(findRecipe);
+		assertEquals(this.recipeId, findRecipe.getId());
+		
+		verify(this.recipeRepository, times(1)).findById(anyLong());
 	}
 }

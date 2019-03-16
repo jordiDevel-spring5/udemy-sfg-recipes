@@ -4,15 +4,13 @@
 		<meta charset="UTF-8">
 		<title>Recipe Home</title>
 		
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" 
-			integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" 
-			crossorigin="anonymous">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+			th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
 		
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" 
-			integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" 
-			crossorigin="anonymous"></script>
+		<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+		
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+			th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 	</head>
 	
 	<body>
@@ -32,20 +30,24 @@
 										<tr>
 											<th>Id</th>
 											<th>Description</th>
+											<th>View</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr th:remove="all">
 											<td>123</td>
 											<td>Big Mac</td>
+											<td><a href="#">View</a></td>
 										</tr>
 										<tr th:remove="all">
 											<td>456</td>
 											<td>McPollo</td>
+											<td><a href="#">View</a></td>
 										</tr>
 										<tr th:each="recipe : ${recipes}">
 											<td th:text="${recipe.id}">1</td>
 											<td th:text="${recipe.description}">Macheroni al forno</td>
+											<td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">View</a></td>
 										</tr>
 									</tbody>
 								</table>
