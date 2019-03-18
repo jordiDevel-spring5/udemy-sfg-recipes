@@ -4,7 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import guru.springframework.sfgrecipes.commands.RecipeCommand;
+import guru.springframework.sfgrecipes.converters.RecipeCommandToRecipe;
+import guru.springframework.sfgrecipes.converters.RecipeToRecipeCommand;
 import guru.springframework.sfgrecipes.domain.Recipe;
 import guru.springframework.sfgrecipes.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 public class RecipeServiceImpl implements RecipeService {
 
 	private final RecipeRepository recipeRepository;
+	private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-	public RecipeServiceImpl(RecipeRepository recipeRepository) {
+	public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe,
+			RecipeToRecipeCommand recipeToRecipeCommand) {
 		this.recipeRepository = recipeRepository;
+		this.recipeCommandToRecipe = recipeCommandToRecipe;
+		this.recipeToRecipeCommand = recipeToRecipeCommand;
 	}
 
 	@Override
@@ -42,6 +51,28 @@ public class RecipeServiceImpl implements RecipeService {
 		log.debug("[RecipeService] - findById has been called");
 
 		return this.recipeRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public RecipeCommand saveRecipeCommand(RecipeCommand recipeCmd) {
+		log.debug("[RecipeService] - saveRecipeCommand has been called");
+		
+		Recipe detachedRecipe = this.recipeCommandToRecipe.convert(recipeCmd);
+
+        Recipe savedRecipe = this.recipeRepository.save(detachedRecipe);
+        log.debug("Saved RecipeId:" + savedRecipe.getId());
+        return this.recipeToRecipeCommand.convert(savedRecipe);
+	}
+
+	@Override
+	@Transactional
+	public RecipeCommand findCommandById(Long id) {
+		log.debug("[RecipeService] - findCommandById has been called");
+
+		Recipe recipe = this.recipeRepository.findById(id).orElse(null);
+		
+		return this.recipeToRecipeCommand.convert(recipe);
 	}
 	
 }

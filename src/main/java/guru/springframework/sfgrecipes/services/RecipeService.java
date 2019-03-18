@@ -2,6 +2,7 @@ package guru.springframework.sfgrecipes.services;
 
 import java.util.Set;
 
+import guru.springframework.sfgrecipes.commands.RecipeCommand;
 import guru.springframework.sfgrecipes.domain.Recipe;
 
 public interface RecipeService {
@@ -11,4 +12,8 @@ public interface RecipeService {
 	Set<Recipe> findAll();
 	
 	Recipe findById(Long id);
+	
+	RecipeCommand findCommandById(Long id);
+	
+	RecipeCommand saveRecipeCommand(RecipeCommand recipeCmd);
 }

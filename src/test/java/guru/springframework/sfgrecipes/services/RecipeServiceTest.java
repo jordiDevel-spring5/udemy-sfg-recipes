@@ -33,7 +33,7 @@ public class RecipeServiceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
-		this.recipeService = new RecipeServiceImpl(this.recipeRepository);
+		this.recipeService = new RecipeServiceImpl(this.recipeRepository, null, null);
 	}
 	
 	@Test
