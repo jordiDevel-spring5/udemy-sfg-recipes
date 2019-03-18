@@ -39,6 +39,10 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 		recipeCmd.setUrl(source.getUrl());
 		recipeCmd.setNotes(this.notesConverter.convert(source.getNotes()));
 		
+		if (source.getNotes() != null) {
+			recipeCmd.setNotes(this.notesConverter.convert(source.getNotes()));
+		}
+		
 		if (source.getCategories() != null && !source.getCategories().isEmpty()) {
 			source.getCategories().forEach(cat -> recipeCmd.getCategories().add(this.categoryConveter.convert(cat)));
 		}

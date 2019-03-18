@@ -16,17 +16,14 @@ public class RecipeToRecipeCommandTest {
 	public static final Long LONG_VALUE = 1L;
 	
 	RecipeToRecipeCommand converter;
-	CategoryToCategoryCommand catConverter;
-	IngredientToIngredientCommand ingConverter;
-	NotesToNotesCommand notesConverter;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.catConverter = new CategoryToCategoryCommand();
-		this.ingConverter = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
-		this.notesConverter = new NotesToNotesCommand();
-		
-		this.converter = new RecipeToRecipeCommand(catConverter, ingConverter, notesConverter);
+		this.converter = new RecipeToRecipeCommand(
+			new CategoryToCategoryCommand(), 
+			new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand()), 
+			new NotesToNotesCommand()
+		);
 	}
 
 	@Test

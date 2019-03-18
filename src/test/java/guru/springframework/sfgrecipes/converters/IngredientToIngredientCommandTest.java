@@ -20,12 +20,10 @@ public class IngredientToIngredientCommandTest {
 	public static final BigDecimal BIGDECIMAL_VALUE = new BigDecimal(2.5);
 	
 	IngredientToIngredientCommand converter;
-	UnitOfMeasureToUnitOfMeasureCommand uomConverter;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.uomConverter = new UnitOfMeasureToUnitOfMeasureCommand();
-		this.converter = new IngredientToIngredientCommand(uomConverter);
+		this.converter = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
 	}
 
 	@Test
