@@ -21,6 +21,16 @@ public class UnitOfMeasureCommandToUnitOfMeasureTest {
 	}
 
 	@Test
+	public void testNullParameter() throws Exception {
+		assertNull(this.converter.convert(null));
+	}
+
+	@Test
+	public void testEmptyObject() throws Exception {
+		assertNotNull(this.converter.convert(new UnitOfMeasureCommand()));
+	}
+	
+	@Test
 	public void testConvert() {
 		//given
 		UnitOfMeasureCommand uomCmd = new UnitOfMeasureCommand();
