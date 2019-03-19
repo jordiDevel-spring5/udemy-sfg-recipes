@@ -74,5 +74,12 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		return this.recipeToRecipeCommand.convert(recipe);
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		log.debug("[RecipeService] - deleteById has been called");
+		
+		this.recipeRepository.deleteById(id);
+	}
 	
 }

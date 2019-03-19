@@ -2,6 +2,7 @@ package guru.springframework.sfgrecipes.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class RecipeController {
 		this.recipeService = recipeService;
 	}
 	
-	@RequestMapping("/{id}/show")
+	@GetMapping("/{id}/show")
 	public String getRecipeById(@PathVariable String id, Model model) {
 		log.debug("[RecipeController] - getRecipeById has been called");
 		
@@ -31,7 +32,7 @@ public class RecipeController {
 		return "recipe/show";
 	}
 	
-	@RequestMapping("/new")
+	@GetMapping("/new")
 	public String newRecipe(Model model) {
 		log.debug("[RecipeController] - newRecipe has been called");
 		
@@ -40,13 +41,22 @@ public class RecipeController {
 		return "recipe/recipeform";
 	}
 	
-	@RequestMapping("/{id}/update")
+	@GetMapping("/{id}/update")
 	public String updateRecipe(@PathVariable String id, Model model) {
 		log.debug("[RecipeController] - updateRecipe has been called");
 		
 		model.addAttribute("recipe", this.recipeService.findCommandById(Long.valueOf(id)));
 		
 		return "recipe/recipeform";
+	}
+	
+	@GetMapping("/{id}/delete")
+	public String deleteRecipe(@PathVariable String id) {
+		log.debug("[RecipeController] - deleteRecipe has been called");
+		
+		this.recipeService.deleteById(Long.valueOf(id));
+		
+		return "redirect:/";
 	}
 	
 	@PostMapping

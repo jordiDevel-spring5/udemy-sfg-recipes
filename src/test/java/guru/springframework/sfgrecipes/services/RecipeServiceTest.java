@@ -60,4 +60,13 @@ public class RecipeServiceTest {
 		
 		verify(this.recipeRepository, times(1)).findById(anyLong());
 	}
+	
+	@Test
+	public void deleteById() throws Exception {
+		Long idDelete = 2L;
+		
+		this.recipeService.deleteById(idDelete);
+		
+		verify(this.recipeRepository, times(1)).deleteById(anyLong());
+	}
 }
