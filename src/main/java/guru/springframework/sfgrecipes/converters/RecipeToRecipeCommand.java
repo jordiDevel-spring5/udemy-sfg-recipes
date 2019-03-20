@@ -1,10 +1,12 @@
 package guru.springframework.sfgrecipes.converters;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import guru.springframework.sfgrecipes.commands.RecipeCommand;
 import guru.springframework.sfgrecipes.domain.Recipe;
+import lombok.Synchronized;
 
 @Component
 public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
@@ -21,6 +23,8 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 		this.notesConverter = notesConverter;
 	}
 
+	@Synchronized
+	@Nullable
 	@Override
 	public RecipeCommand convert(Recipe source) {
 		if (source == null) {

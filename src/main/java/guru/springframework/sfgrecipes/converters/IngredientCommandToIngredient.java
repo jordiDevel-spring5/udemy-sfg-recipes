@@ -1,10 +1,12 @@
 package guru.springframework.sfgrecipes.converters;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import guru.springframework.sfgrecipes.commands.IngredientCommand;
 import guru.springframework.sfgrecipes.domain.Ingredient;
+import lombok.Synchronized;
 
 @Component
 public class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
@@ -16,6 +18,8 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
 		this.uomConverter = uomConverter;
 	}
 
+	@Synchronized
+	@Nullable
 	@Override
 	public Ingredient convert(IngredientCommand source) {
 		if (source == null) {

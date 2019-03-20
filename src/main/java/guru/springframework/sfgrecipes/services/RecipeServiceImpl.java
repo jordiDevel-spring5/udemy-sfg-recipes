@@ -1,7 +1,8 @@
 package guru.springframework.sfgrecipes.services;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,11 +40,8 @@ public class RecipeServiceImpl implements RecipeService {
 	public Set<Recipe> findAll() {
 		log.debug("[RecipeService] - findAll has been called");
 		
-		Set<Recipe> recipeSet = new HashSet<>();
-		
-		this.recipeRepository.findAll().forEach(recipeSet::add);
-		
-		return recipeSet;
+		return StreamSupport.stream(this.recipeRepository.findAll().spliterator(),  false)
+			.collect(Collectors.toSet());
 	}
 
 	@Override

@@ -83,4 +83,12 @@ public class Recipe {
 		return this;
 	}
 	
+	public void removeIngredient(Ingredient ingredient) {
+		ingredient.setRecipe(null);
+		this.ingredients.remove(ingredient);
+	}
+	
+	public void removeCategory(Category category) {
+		this.categories.remove(category);
+	}
 }
